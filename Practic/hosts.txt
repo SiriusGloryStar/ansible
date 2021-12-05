@@ -1,0 +1,5 @@
+[server]
+Linux1 ansible_host=18.221.229.218
+
+[all_server:children]
+server

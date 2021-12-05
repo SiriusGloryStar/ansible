@@ -1,0 +1,8 @@
+---
+- name: install xrdp & xfce4
+  apt: name={{ item }} state=latest
+  loop:
+   - xrdp
+   - xfce4
+
+

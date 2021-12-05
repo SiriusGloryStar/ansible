@@ -1,0 +1,20 @@
+---
+  
+- name: Update & Upgrade OS
+  apt:
+      upgrade: yes
+      update_cache: yes
+      cache_valid_time: 86400
+- name: Install tools
+  apt: name={{ item }} state=latest
+  with_items:
+      - mc
+
+- name: install Apache
+  apt: name=apache2 state=latest
+  notify: restart_apache
+
+- name: copy iles to the remote servers
+  copy: src={{ src }} dest={{ dest }} mode=0555
+  notify: restart_apache
+

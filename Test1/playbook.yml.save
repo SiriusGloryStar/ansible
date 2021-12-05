@@ -1,0 +1,14 @@
+---
+- name: Test
+  host : All
+  become: yes
+  
+  vars:
+   message1 : Hi!!! 
+   secret   : sdfgv87834rg###fedgfegf*****SECRET_VAR
+  
+
+  tasks:
+  - name : Print secret vart
+    debug:
+    var  : secret  

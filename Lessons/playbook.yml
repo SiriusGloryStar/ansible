@@ -1,0 +1,30 @@
+---
+- name: Test playbook
+  hosts: all
+  become: yes
+  
+  vars:
+    message1: Hi!!! 
+    secret: sdfgv87834rg###fedgfegf*****SECRET_VAR
+  
+  tasks:
+  
+  - name: Print secret vart
+    debug:
+      var: secret  
+  
+  - debug:
+      msg: "Secret word:  {{secret}}"
+  
+  - shell: uptime
+    register: result
+
+  - debug:
+      var: result
+      var: result.stdout  
+  
+  - set_fact: mess="{{result.stdout}} from {{owner}}"
+
+  - name: Output uptime
+    debug:
+      var: mess

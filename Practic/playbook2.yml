@@ -1,0 +1,13 @@
+---
+- name: test
+  hosts: server
+  become: yes  
+
+  tasks:
+   - name: msg
+     debug: msg = " {{ item }}  "
+     loop:
+       - "Test 1"
+       - "Test 2" 
+   
+     

@@ -1,0 +1,13 @@
+---
+- name: Loop
+  hosts: linux2
+  become: yes
+
+  vars: 
+    source: /home/sirius/
+
+  tasks:
+  - name: Copy
+    copy: src={{ item }} dest=/var/www/html
+    with_fileglob: "{{ source }}/*.*"
+  
