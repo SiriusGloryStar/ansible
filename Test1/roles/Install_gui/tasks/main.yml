@@ -5,4 +5,13 @@
    - xrdp
    - xfce4
 
+- name: Add session to session
+  shell: echo xfce4-session > ~/.xsession
+
+- name: Add session to the startwm.sh
+  shell: echo startxfce4 > /etc/xrdp/startwm.sh
+
+- name: Restart XRDP service
+  service: name=xrdp state=restarted
+ 
 
