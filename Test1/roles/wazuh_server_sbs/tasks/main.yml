@@ -1,0 +1,68 @@
+---
+- name: install necessary packages for the installation
+  apt: name={{ item }} state=latest
+  loop: 
+    -  curl 
+    -  apt-transport-https 
+    -  unzip 
+    -  wget 
+    -  libcap2-bin 
+    -  software-properties-common 
+    -  lsb-release 
+    -  gnupg
+
+- name: Install the GPG key
+  shell: echo "deb https://packages.wazuh.com/4.x/apt/ stable main" | tee -a /etc/apt/sources.list.d/wazuh.list
+
+- name: Repo update
+  apt: update_cache=yes force_apt_get=yes cache_valid_time=3600
+
+- name: Install wazuh-manager
+  apt: name=wazuh-manager state=latest
+
+- name: Enable and start the Wathuh manager service
+  service: name={{ item }} state=started enabled=yes
+  loop:
+   # - demon-reload
+    - wazuh-manager
+     
+- name: Check status
+  shell: systemctl status wazuh-manager
+  register: status
+
+- name: Print status of the Wazuh
+  debug: 
+   var: status.stdout
+
+- name: ----------   Elasticsearch Install  -----------------
+  apt: name={{ item }} state=latest
+  loop:
+    - elasticsearch-oss
+    - opendistroforelasticsearch
+
+- name: Config elasticsearch & user and roles
+  shell: "{{ item }}"
+  loop:
+    - curl -so /etc/elasticsearch/elasticsearch.yml https://packages.wazuh.com/resources/4.2/open-distro/elasticsearch/7.x/elasticsearch_all_in_one.yml
+    - curl -so /usr/share/elasticsearch/plugins/opendistro_security/securityconfig/roles.yml https://packages.wazuh.com/resources/4.2/open-distro/elasticsearch/roles/roles.yml
+    - curl -so /usr/share/elasticsearch/plugins/opendistro_security/securityconfig/roles_mapping.yml https://packages.wazuh.com/resources/4.2/open-distro/elasticsearch/roles/roles_mapping.yml
+    - curl -so /usr/share/elasticsearch/plugins/opendistro_security/securityconfig/internal_users.yml https://packages.wazuh.com/resources/4.2/open-distro/elasticsearch/roles/internal_users.yml
+
+- name: Remuving the demo certificates
+  file: path='/etc/elasticsearch/{{ item }}' state=absent 
+  loop:
+    - esnode-key.pem
+    - esnode.pem
+    - kirk-key.pem
+    - kirk.pem
+    - root-ca.pem 
+
+
+- name: Generate and deploy the certificates
+  shell: "{{ item }}"
+  loop:
+   - curl -so ~/wazuh-cert-tool.sh https://packages.wazuh.com/resources/4.2/open-distro/tools/certificate-utility/wazuh-cert-tool.sh
+   - curl -so ~/instances.yml https://packages.wazuh.com/resources/4.2/open-distro/tools/certificate-utility/instances_aio.yml
+
+- name: Run the script for creating certificates
+  shell: bash ~/wazuh-cert-tool.sh

@@ -4,9 +4,10 @@
   become: yes
  
   roles:
-    - apache  
-    - Install_gui
-    - browsers_install
+ #   - apache  
+ #   - Install_gui
+ #   - browsers_install
+   - wazuh_server_sbs
 
   tasks:
    - name: Default user add
