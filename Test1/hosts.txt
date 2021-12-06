@@ -1,5 +1,6 @@
 [server]
-server1 ansible_host=3.134.76.229 owner=Dima
+server1 ansible_host=52.14.87.80 owner=Dima
+
 
 [all_servers:children]
 server
