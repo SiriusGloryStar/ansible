@@ -7,19 +7,6 @@
  #   - apache  
  #   - Install_gui
  #   - browsers_install
-   - wazuh_server_sbs
+   - wazuh_agent
 
-  tasks:
-   - name: Default user add
-     user:
-       name: sirius
-       password: '$6$B417SbFBwafr7.X$tS/aG3r0sRBkD0FfQcuK5IQS120vmXtlBfr6HySErKeesdQWmlPhsK42Vc5/fy9PtziSPl1ZQjEN4YIWlUwmE0'
-
-
-       groups:
-         - sudo
-       state: present
-       shell: /bin/bash
-       system: no
-       createhome: yes
-       home: /home/sirius   
+     

@@ -21,10 +21,7 @@
   apt: name=wazuh-manager allow_unauthenticated=yes state=latest
    
 - name: Enable and start the Wathuh manager service
-  service: name={{ item }} state=started enabled=yes
-  loop:
-   # - demon-reload
-    - wazuh-manager
+  service: name=wazuh-manager state=started enabled=yes
      
 - name: Check status
   shell: systemctl status wazuh-manager

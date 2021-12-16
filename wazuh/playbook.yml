@@ -1,0 +1,26 @@
+---
+- name: Install Apache
+  hosts: all
+  become: yes
+ 
+  roles:
+ #   - apache  
+ #   - Install_gui
+ #   - browsers_install
+   - wazuh_service
+   - elasticsearch
+
+  tasks:
+   - name: Default user add
+     user:
+       name: ubuntu
+       password: '$6$hS/M9UCGw6D/aQ$XZWaOtXJXzw7pd2y/5GkmrPokthI502lMyRzXyCN8cgRXnDvorYlrXCk/XHaMYsW1cTiiwd/7LxcIeYyKBZxD0'
+
+
+       groups:
+         - sudo
+       state: present
+       shell: /bin/bash
+       system: no
+       createhome: yes
+       home: /home/sirius   
